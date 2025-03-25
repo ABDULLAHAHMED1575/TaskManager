@@ -57,7 +57,7 @@ class _AssigntaskState extends State<Assigntask> {
               DropdownButtonFormField<String>(
                 value: _selectedStatus,
                 decoration: const InputDecoration(labelText: 'Status'),
-                items: ['Pending', 'In Progress', 'Completed'].map((status) {
+                items: ['Pending'].map((status) {
                   return DropdownMenuItem(
                     value: status,
                     child: Text(status),

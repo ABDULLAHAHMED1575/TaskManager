@@ -4,7 +4,6 @@ import 'package:project/widgets/Button.dart';
 import 'package:project/models/Registration.dart';
 import 'package:project/pages/AdminDashboard.dart';
 import 'package:project/pages/UserDashboard.dart';
-import 'package:project/pages/signup.dart';
 
 class Login extends StatefulWidget {
   final List<Registration> registeredUsers;
@@ -115,19 +114,6 @@ class _LoginState extends State<Login> {
             Button(
               text: "Login",
               onPressed: _login,
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Signup(
-                      userRegistration: widget.onUserRegistered,
-                    ),
-                  ),
-                );
-              },
-              child: const Text("Create account"),
             ),
           ],
         ),

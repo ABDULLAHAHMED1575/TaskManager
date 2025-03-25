@@ -62,13 +62,6 @@ class _AdmindashboardState extends State<Admindashboard> {
     }
   }
 
-  void _updateTaskStatus(int index, String newStatus) {
-    setState(() {
-      widget.allTasks[index]['status'] = newStatus;
-      widget.onTaskUpdated(widget.allTasks[index]);
-    });
-  }
-
   void _viewUsers() {
     showDialog(
       context: context,
@@ -104,7 +97,7 @@ class _AdmindashboardState extends State<Admindashboard> {
   }
 
   void _logout() {
-    Navigator.pushAndRemoveUntil(
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => Login(
@@ -115,7 +108,6 @@ class _AdmindashboardState extends State<Admindashboard> {
           onTaskUpdated: widget.onTaskUpdated,
         ),
       ),
-          (route) => false,
     );
   }
 
@@ -162,42 +154,27 @@ class _AdmindashboardState extends State<Admindashboard> {
                 ? const Center(child: Text("No tasks assigned yet"))
                 : ListView.builder(
               itemCount: widget.allTasks.length,
-              itemBuilder: (context, index) => Card(
-                margin: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 8.0),
-                child: ListTile(
-                  title: Text(widget.allTasks[index]['title']),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Assigned to: ${widget.allTasks[index]['assignedTo']}"),
-                      Text("Status: ${widget.allTasks[index]['status']}"),
-                      Text("Created: ${widget.allTasks[index]['createdAt']?.split(' ')[0] ?? ''}"),
-                    ],
+              itemBuilder: (context, index) => Column(
+                children: [
+                  ListTile(
+                    title: Text(widget.allTasks[index]['title']),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Assigned to: ${widget.allTasks[index]['assignedTo']}"),
+                        Text("Status: ${widget.allTasks[index]['status']}"),
+                      ],
+                    ),
+                    trailing: IconButton(onPressed: (){
+                      setState(() {
+                        widget.allTasks.removeAt(index);
+                      });
+                    },
+                    icon: const Icon(Icons.delete),
+                      color: Colors.red,
+                    ),
                   ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      PopupMenuButton<String>(
-                        onSelected: (value) => _updateTaskStatus(index, value),
-                        itemBuilder: (context) => [
-                          const PopupMenuItem(
-                            value: 'Pending',
-                            child: Text('Mark as Pending'),
-                          ),
-                          const PopupMenuItem(
-                            value: 'In Progress',
-                            child: Text('Mark as In Progress'),
-                          ),
-                          const PopupMenuItem(
-                            value: 'Completed',
-                            child: Text('Mark as Completed'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                ],
               ),
             ),
           ),
